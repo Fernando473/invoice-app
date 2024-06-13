@@ -2,6 +2,8 @@ package com.altioracorp.evaluation.domain.ports.in.item;
 
 import com.altioracorp.evaluation.domain.models.Item;
 
-public interface CreateItemUseCase {
-    Item createItem(Item item);
+import java.util.Optional;
+
+public interface UpdateItemUseCase {
+    Optional<Item> update(long id, Item item);
 }

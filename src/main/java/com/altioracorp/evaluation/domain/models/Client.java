@@ -2,16 +2,20 @@ package com.altioracorp.evaluation.domain.models;
 
 import lombok.Data;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
 
+@Data
 public class Client {
     private long id;
-    private String name;
+    private String firstName;
     private String lastName;
+    private List<Order> orders;
 
-    public Client(long id, String name, String lastName) {
-        this.name = name;
+    public Client(long id, String firstName, String lastName, List<Order> orders) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
+        this.orders = orders;
     }
 }

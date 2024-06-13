@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RetrieveOrderUseCase {
-    Optional<Order> getOrder(String orderId);
+    Optional<Order> getOrder(long orderId);
 
     List<Order> allOrders();
 }
