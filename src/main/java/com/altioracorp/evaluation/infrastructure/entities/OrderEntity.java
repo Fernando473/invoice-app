@@ -35,14 +35,21 @@ public class OrderEntity {
     public static OrderEntity fromDomainModel(Order order) {
         OrderEntity orderEntity = new OrderEntity();
         List<Item> items = order.getItems() != null ? order.getItems() : Collections.emptyList();
-        orderEntity.items = items.stream().map(ItemEntity::fromDomainModel).collect(Collectors.toList());
+        orderEntity.items = items.stream()
+                .map(item -> {
+                    ItemEntity itemEntity = ItemEntity.fromDomainModel(item);
+                    itemEntity.setOrder(orderEntity);  // Ensure the item is linked to this order
+                    return itemEntity;
+                })
+                .collect(Collectors.toList());
         orderEntity.setDate(order.getDate());
         return orderEntity;
     }
 
-
     public Order toDomainModel() {
-        List<Item> items = this.getItems().stream().map(ItemEntity::toDomainModel).collect(Collectors.toList());
+        List<Item> items = this.getItems().stream()
+                .map(ItemEntity::toDomainModel)
+                .collect(Collectors.toList());
         return new Order(this.orderID, this.date, items);
     }
 }

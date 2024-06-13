@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,13 +28,18 @@ public class ClientEntity {
     }
 
     public static ClientEntity fromDomainModel(Client client) {
-        List<OrderEntity> orderEntities = client.getOrders().stream()
-                .map(OrderEntity::fromDomainModel)
-                .collect(Collectors.toList());
         ClientEntity clientEntity = new ClientEntity();
+        List<Order> orders = client.getOrders() != null ? client.getOrders() : Collections.emptyList();
+        clientEntity.orders = orders
+                .stream()
+                .map(order -> {
+                    OrderEntity orderEntity = OrderEntity.fromDomainModel(order);
+                    orderEntity.setClient(clientEntity);
+                    return orderEntity;
+                }).collect(Collectors.toList());
+
         clientEntity.setFirstName(client.getFirstName());
         clientEntity.setLastName(client.getLastName());
-        clientEntity.setOrders(orderEntities);
         return clientEntity;
     }
 

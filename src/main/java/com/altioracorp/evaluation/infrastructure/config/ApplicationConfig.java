@@ -66,9 +66,11 @@ public class ApplicationConfig {
         );
     }
 
+
     @Bean
     public OrderRepositoryPort orderRepositoryPort(JPAOrderRepositoryAdapter jpaOrderRepositoryAdapter){
         return jpaOrderRepositoryAdapter;
     }
+
 
 }
