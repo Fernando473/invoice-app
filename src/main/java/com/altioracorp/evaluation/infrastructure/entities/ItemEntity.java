@@ -1,10 +1,7 @@
 package com.altioracorp.evaluation.infrastructure.entities;
 
 import com.altioracorp.evaluation.domain.models.Item;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -18,12 +15,19 @@ public class ItemEntity {
     private String itemName;
     private Double price;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private OrderEntity order;
+
     public ItemEntity() {
 
     }
 
     public static ItemEntity fromDomainModel(Item item) {
-        return new ItemEntity(item.getItemCode(), item.getItemName(), item.getPrice());
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setItemName(item.getItemName());
+        itemEntity.setPrice(item.getPrice());
+        return itemEntity;
     }
 
     public Item toDomainModel() {

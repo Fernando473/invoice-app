@@ -10,7 +10,7 @@ public class Client {
     private long id;
     private String firstName;
     private String lastName;
-    private List<Order> orders;
+    private List<Order> orders = new ArrayList<>();
 
     public Client(long id, String firstName, String lastName, List<Order> orders) {
         this.firstName = firstName;

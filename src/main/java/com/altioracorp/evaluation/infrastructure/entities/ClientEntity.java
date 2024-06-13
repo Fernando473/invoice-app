@@ -20,8 +20,7 @@ public class ClientEntity {
     private String firstName;
     private String lastName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
-
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderEntity> orders = new ArrayList<>();
 
     public ClientEntity() {
@@ -31,7 +30,11 @@ public class ClientEntity {
         List<OrderEntity> orderEntities = client.getOrders().stream()
                 .map(OrderEntity::fromDomainModel)
                 .collect(Collectors.toList());
-        return new ClientEntity(client.getId(), client.getFirstName(), client.getLastName(), orderEntities);
+        ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setFirstName(client.getFirstName());
+        clientEntity.setLastName(client.getLastName());
+        clientEntity.setOrders(orderEntities);
+        return clientEntity;
     }
 
     public Client toDomainModel() {
