@@ -2,6 +2,7 @@ package com.altioracorp.evaluation.infrastructure.config;
 
 import com.altioracorp.evaluation.application.services.ClientService;
 import com.altioracorp.evaluation.application.services.ItemService;
+import com.altioracorp.evaluation.application.services.OrderDetailService;
 import com.altioracorp.evaluation.application.services.OrderService;
 import com.altioracorp.evaluation.application.usecases.client.CreateClientUseCaseImpl;
 import com.altioracorp.evaluation.application.usecases.client.DeleteClientUseCaseImpl;
@@ -15,12 +16,18 @@ import com.altioracorp.evaluation.application.usecases.order.CreateOrderUseCaseI
 import com.altioracorp.evaluation.application.usecases.order.DeleteOrderUseCaseImpl;
 import com.altioracorp.evaluation.application.usecases.order.RetrieveOrderUseCaseImpl;
 import com.altioracorp.evaluation.application.usecases.order.UpdateOrderUseCaseImpl;
+import com.altioracorp.evaluation.application.usecases.order_detail.CreateOrderDetailUseCaseImpl;
+import com.altioracorp.evaluation.application.usecases.order_detail.DeleteOrderDetailUseCaseImpl;
+import com.altioracorp.evaluation.application.usecases.order_detail.RetrieveOrderDetailUseCaseImpl;
+import com.altioracorp.evaluation.application.usecases.order_detail.UpdateOrderDetailUseCaseImpl;
 import com.altioracorp.evaluation.domain.ports.out.client.ClientRepositoryPort;
 import com.altioracorp.evaluation.domain.ports.out.item.ItemRepositoryPort;
 import com.altioracorp.evaluation.domain.ports.out.order.OrderRepositoryPort;
+import com.altioracorp.evaluation.domain.ports.out.order_detail.OrderDetailRepositoryPort;
 import com.altioracorp.evaluation.infrastructure.repositories.client.JPAClientRepositoryAdapter;
 import com.altioracorp.evaluation.infrastructure.repositories.item.JPAItemRepositoryAdapter;
 import com.altioracorp.evaluation.infrastructure.repositories.order.JPAOrderRepositoryAdapter;
+import com.altioracorp.evaluation.infrastructure.repositories.order_detail.JPAOrderDetailRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -57,7 +64,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public OrderService orderService(OrderRepositoryPort orderRepositoryPort){
+    public OrderService orderService(OrderRepositoryPort orderRepositoryPort) {
         return new OrderService(
                 new CreateOrderUseCaseImpl(orderRepositoryPort),
                 new RetrieveOrderUseCaseImpl(orderRepositoryPort),
@@ -68,8 +75,23 @@ public class ApplicationConfig {
 
 
     @Bean
-    public OrderRepositoryPort orderRepositoryPort(JPAOrderRepositoryAdapter jpaOrderRepositoryAdapter){
+    public OrderRepositoryPort orderRepositoryPort(JPAOrderRepositoryAdapter jpaOrderRepositoryAdapter) {
         return jpaOrderRepositoryAdapter;
+    }
+
+    @Bean
+    public OrderDetailService orderDetailService(OrderDetailRepositoryPort orderDetailRepositoryPort) {
+        return new OrderDetailService(
+                new CreateOrderDetailUseCaseImpl(orderDetailRepositoryPort),
+                new RetrieveOrderDetailUseCaseImpl(orderDetailRepositoryPort),
+                new DeleteOrderDetailUseCaseImpl(orderDetailRepositoryPort),
+                new UpdateOrderDetailUseCaseImpl(orderDetailRepositoryPort)
+                );
+    }
+
+    @Bean
+    public OrderDetailRepositoryPort orderDetailRepositoryPort(JPAOrderDetailRepositoryAdapter jpaOrderDetailAdapter) {
+        return jpaOrderDetailAdapter;
     }
 
 

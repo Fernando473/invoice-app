@@ -1,7 +1,9 @@
 package com.altioracorp.evaluation.infrastructure.repositories.order;
 
+import com.altioracorp.evaluation.domain.models.Item;
 import com.altioracorp.evaluation.domain.models.Order;
 import com.altioracorp.evaluation.domain.ports.out.order.OrderRepositoryPort;
+import com.altioracorp.evaluation.infrastructure.entities.ItemEntity;
 import com.altioracorp.evaluation.infrastructure.entities.OrderEntity;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +42,7 @@ public class JPAOrderRepositoryAdapter implements OrderRepositoryPort {
 
     @Override
     public Order save(Order order) {
+
         OrderEntity orderEntity = OrderEntity.fromDomainModel(order);
         OrderEntity orderEntityCreated = jpaOrderRepository.save(orderEntity);
         return orderEntityCreated.toDomainModel();

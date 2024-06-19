@@ -28,7 +28,7 @@ public class ClientController {
     @GetMapping
     public ResponseEntity<List<Client>> allClients() {
         List<Client> clients = clientService.allClients();
-        return new ResponseEntity<>(clients, HttpStatus.CREATED);
+        return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

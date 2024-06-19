@@ -12,10 +12,9 @@ public class Client {
     private String lastName;
     private List<Order> orders = new ArrayList<>();
 
-    public Client(long id, String firstName, String lastName, List<Order> orders) {
+    public Client(long id, String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
-        this.orders = orders;
     }
 }

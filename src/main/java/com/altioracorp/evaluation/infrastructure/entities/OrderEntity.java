@@ -1,16 +1,15 @@
 package com.altioracorp.evaluation.infrastructure.entities;
 
-import com.altioracorp.evaluation.domain.models.Item;
+
 import com.altioracorp.evaluation.domain.models.Order;
+import com.altioracorp.evaluation.domain.models.OrderDetail;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -27,29 +26,24 @@ public class OrderEntity {
     private ClientEntity client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemEntity> items = new ArrayList<>();
+    private List<OrderDetailEntity> orderDetails = new ArrayList<>();
+
 
     public OrderEntity() {
     }
 
     public static OrderEntity fromDomainModel(Order order) {
         OrderEntity orderEntity = new OrderEntity();
-        List<Item> items = order.getItems() != null ? order.getItems() : Collections.emptyList();
-        orderEntity.items = items.stream()
-                .map(item -> {
-                    ItemEntity itemEntity = ItemEntity.fromDomainModel(item);
-                    itemEntity.setOrder(orderEntity);  // Ensure the item is linked to this order
-                    return itemEntity;
-                })
-                .collect(Collectors.toList());
+        ClientEntity clientEntity = ClientEntity.fromDomainModel(order.getClient());
+        OrderDetailEntity orderDetailEntity = OrderDetailEntity.fromDomainModel(order.getOrderDetail());
+        orderEntity.setClient(clientEntity);
         orderEntity.setDate(order.getDate());
         return orderEntity;
     }
 
     public Order toDomainModel() {
-        List<Item> items = this.getItems().stream()
-                .map(ItemEntity::toDomainModel)
-                .collect(Collectors.toList());
-        return new Order(this.orderID, this.date, items);
+        Order order = new Order(this.orderID, this.date);
+        order.setClient(this.client.toDomainModel());
+        return order;
     }
 }

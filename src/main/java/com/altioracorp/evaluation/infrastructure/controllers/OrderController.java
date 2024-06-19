@@ -28,15 +28,23 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Optional<Order> order = orderService.getOrder(id);
-        return order.map(order_ -> new ResponseEntity<>(order_, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        try {
+            Optional<Order> order = orderService.getOrder(id);
+            return order.map(order_ -> new ResponseEntity<>(order_, HttpStatus.OK))
+                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (Exception e){
+            return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order orderCreated = orderService.save(order);
-        return new ResponseEntity<>(orderCreated, HttpStatus.CREATED);
+        try {
+            Order orderCreated = orderService.save(order);
+            return new ResponseEntity<>(orderCreated, HttpStatus.CREATED);
+        }catch (Exception e ){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")

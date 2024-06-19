@@ -10,11 +10,10 @@ import java.util.List;
 public class Order {
     private long orderID;
     private LocalDateTime date;
-    private List<Item> items;
-
-    public Order(long orderID, LocalDateTime date, List<Item> items) {
+    private OrderDetail orderDetail;
+    private Client client;
+    public Order(long orderID, LocalDateTime date) {
         this.orderID = orderID;
         this.date = date;
-        this.items = items;
     }
 }

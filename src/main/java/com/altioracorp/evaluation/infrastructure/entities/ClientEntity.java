@@ -47,6 +47,9 @@ public class ClientEntity {
         List<Order> orders = this.getOrders().stream()
                 .map(OrderEntity::toDomainModel)
                 .collect(Collectors.toList());
-        return new Client(this.id, this.firstName, this.lastName, orders);
+        Client client = new Client(this.id, this.firstName, this.lastName);
+        client.setOrders(orders);
+        return client;
     }
+
 }
